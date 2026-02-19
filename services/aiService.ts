@@ -11,7 +11,8 @@ import { ChatMessage, BlogPost } from '../types';
  * Option 1 (Recommended): Set VITE_API_KEY or REACT_APP_API_KEY in .env
  * Option 2 (Quick Test): Paste your key directly in the quotes below.
  */
-const API_KEY = process.env.API_KEY || process.env.NEXT_PUBLIC_API_KEY || ""; 
+const API_KEY = process.env.GEMINI_API_KEY as string;
+
 
 const SYSTEM_PROMPTS = {
   assistant: `You are Nexus, Saiful Islam's AI portfolio assistant.
