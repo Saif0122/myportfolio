@@ -20,6 +20,8 @@ export const SERVICES: Service[] = [
   { title: 'Performance Engineering', description: 'Lighthouse-optimized frontend development and stress testing to ensure sub-100ms response times at scale.' }
 ];
 
+//Blog page data stating
+
 export const BLOG_POSTS: BlogPost[] = [
   {
     id: 'blog-1',
@@ -312,6 +314,8 @@ export const BLOG_POSTS: BlogPost[] = [
   }
 ];
 
+//Project section starting 
+
 export const PROJECTS: Project[] = [
   {
     id: 'p2',
@@ -472,6 +476,8 @@ export const PROJECTS: Project[] = [
   }
 ];
 
+//Skills fata starting
+
 export const SKILLS: Skill[] = [
   { name: 'MERN Stack', category: 'backend', level: 98 },
   { name: 'Next.js 15', category: 'frontend', level: 95 },
@@ -480,6 +486,9 @@ export const SKILLS: Skill[] = [
   { name: 'Cloud & DevOps', category: 'devops', level: 85 },
   { name: 'API Development', category: 'backend', level: 92 }
 ];
+
+//Pricing data starting
+
 
 export const PRICING_PLANS: PricingPlan[] = [
   {
@@ -553,6 +562,9 @@ export const PRICING_PLANS: PricingPlan[] = [
     isHighlighted: false
   }
 ];
+
+
+//Testimonial data starting here
 
 export const TESTIMONIALS: Testimonial[] = [
   { name: 'Alex Rivera', role: 'CEO', company: 'FinTech Cloud', quote: 'Saifuls expertise in SaaS application development saved us months. His multi-tenant architecture is world-class.', rating: 5 },

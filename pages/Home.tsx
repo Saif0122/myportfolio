@@ -82,7 +82,7 @@ const Home: React.FC = () => {
               </div>
 
               <h2 className="text-gray-400 text-lg md:text-xl font-light leading-relaxed max-w-2xl mb-12">
-                Senior Full Stack Engineer specializing in <strong>SaaS application development</strong> and <strong>scalable web applications</strong>. I engineer high-performance digital products using the modern MERN ecosystem.
+                Senior MERN Stack Engineer specializing in <strong>SaaS application development</strong> and <strong>scalable web applications</strong>. I engineer high-performance digital products using the modern MERN ecosystem.
               </h2>
 
               <div className="flex flex-wrap gap-6 mb-16">

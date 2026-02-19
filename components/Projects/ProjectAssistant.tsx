@@ -1,7 +1,7 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getProjectConsultation } from '../../services/aiService';
-// Added missing Link import from react-router-dom
 import { Link } from 'react-router-dom';
 
 export const ProjectAssistant: React.FC = () => {
@@ -25,16 +25,27 @@ export const ProjectAssistant: React.FC = () => {
   };
 
   const renderBlueprint = (text: string) => {
-    // Basic parser for the 12 points
     const lines = text.split('\n');
     return lines.map((line, i) => {
-      const match = line.match(/^(\d+\.\s+)([^:]+):(.*)$/);
+      // Regex explains:
+      // ^(\d+\.?) -> Starts with digit, optional dot
+      // \s* -> optional whitespace
+      // \** -> optional markdown bold start
+      // ([^:]+?) -> Capture Title (lazy)
+      // \** -> optional markdown bold end
+      // : -> Colon
+      // \s* -> optional whitespace
+      // (.*)$ -> Capture Content
+      const match = line.match(/^(\d+\.?)\s*\**([^:]+?)\**:\s*(.*)$/);
+      
       if (match) {
         return (
           <div key={i} className="mb-8 last:mb-0">
             <h4 className="text-[#00F5FF] text-xs font-black uppercase tracking-widest mb-2 flex items-center gap-2">
-               <span className="w-6 h-6 rounded bg-[#00F5FF]/10 flex items-center justify-center text-[10px]">{match[1].trim()}</span>
-               {match[2]}
+               <span className="w-6 h-6 rounded bg-[#00F5FF]/10 flex items-center justify-center text-[10px] shrink-0">
+                 {match[1].replace('.', '')}
+               </span>
+               {match[2].trim()}
             </h4>
             <div className="text-gray-300 font-light leading-relaxed pl-8 border-l border-white/5">
               {match[3].trim()}
@@ -42,7 +53,11 @@ export const ProjectAssistant: React.FC = () => {
           </div>
         );
       }
-      return <p key={i} className="text-gray-400 mb-4 font-light text-sm">{line}</p>;
+      // Render non-list items as regular paragraphs if they have content
+      if (line.trim().length > 1) {
+        return <p key={i} className="text-gray-400 mb-4 font-light text-sm pl-8">{line}</p>;
+      }
+      return null;
     });
   };
 
@@ -70,7 +85,7 @@ export const ProjectAssistant: React.FC = () => {
                 value={idea}
                 onChange={(e) => setIdea(e.target.value)}
                 placeholder="e.g., A multi-tenant SaaS for real-time inventory management with AI demand forecasting..."
-                className="flex-1 bg-black/40 border border-gray-800 rounded-2xl p-6 text-white text-lg font-light focus:outline-none focus:border-[#00F5FF]/50 transition-all min-h-[120px]"
+                className="flex-1 bg-black/40 border border-gray-800 rounded-2xl p-6 text-white text-lg font-light focus:outline-none focus:border-[#00F5FF]/50 transition-all min-h-[120px] resize-none"
               />
             </div>
             <button
@@ -121,7 +136,6 @@ export const ProjectAssistant: React.FC = () => {
                    <p className="text-gray-300 text-sm font-light">
                      This strategy represents a production-grade MERN architecture. Ready to build?
                    </p>
-                   {/* Using Link component to enable navigation to the contact page */}
                    <Link to="/contact" className="px-8 py-3 bg-white text-black text-xs font-black uppercase tracking-widest rounded-xl hover:bg-[#00F5FF] transition-all shrink-0">
                      Initialize Project
                    </Link>
