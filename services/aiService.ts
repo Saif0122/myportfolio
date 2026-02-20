@@ -46,7 +46,7 @@ CONSTRAINT: Answer based strictly on the provided context.`
  */
 async function generateAiContent(systemInstruction: string, contents: any) {
   try {
-    const response = await fetch("/api/ai/ai.ts", {
+    const response = await fetch("/api/ai", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
