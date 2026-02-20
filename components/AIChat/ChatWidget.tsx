@@ -44,43 +44,49 @@ export const ChatWidget: React.FC = () => {
     }
   }, [messages]);
 
+  //Handle send 
+
   const handleSend = async () => {
   if (!input.trim() || isLoading) return;
 
-  const userMsg: ChatMessage = { role: 'user', content: input };
-  setMessages(prev => [...prev, userMsg]);
+  const userMsg: ChatMessage = { role: "user", content: input };
 
-  setInput('');
+  setInput("");
   setIsLoading(true);
 
-  // Temporary empty assistant message
-  const assistantIndex = messages.length + 1;
-  setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
+  let fullText = "";
 
-  let fullText = '';
+  setMessages(prev => {
+    const updated = [...prev, userMsg, { role: "assistant", content: "" }];
+    return updated;
+  });
 
   try {
-    await streamAIChatResponse([...messages, userMsg], (chunk) => {
-      fullText += chunk;
+    await streamAIChatResponse(
+      [...messages, userMsg],
+      (chunk) => {
+        fullText += chunk;
 
-      setMessages(prev => {
-        const updated = [...prev];
-        updated[assistantIndex] = {
-          role: 'assistant',
-          content: fullText
-        };
-        return updated;
-      });
-    });
+        setMessages(prev => {
+          const updated = [...prev];
+          updated[updated.length - 1] = {
+            role: "assistant",
+            content: fullText,
+          };
+          return updated;
+        });
+      }
+    );
   } catch (error) {
     setMessages(prev => [
       ...prev,
-      { role: 'assistant', content: 'Connection lost. Please try again.' }
+      { role: "assistant", content: "Connection lost. Please try again." },
     ]);
   } finally {
     setIsLoading(false);
   }
 };
+
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
