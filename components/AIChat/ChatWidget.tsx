@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { streamAIChatResponse }  from '../../services/aiService';
+import { getAIChatResponse } from '../../services/aiService';
 import { ChatMessage } from '../../types';
 
 export const ChatWidget: React.FC = () => {
@@ -44,49 +44,23 @@ export const ChatWidget: React.FC = () => {
     }
   }, [messages]);
 
-  //Handle send 
-
   const handleSend = async () => {
-  if (!input.trim() || isLoading) return;
+    if (!input.trim() || isLoading) return;
 
-  const userMsg: ChatMessage = { role: "user", content: input };
+    const userMsg: ChatMessage = { role: 'user', content: input };
+    setMessages(prev => [...prev, userMsg]);
+    setInput('');
+    setIsLoading(true);
 
-  setInput("");
-  setIsLoading(true);
-
-  let fullText = "";
-
-  setMessages(prev => {
-    const updated = [...prev, userMsg, { role: "assistant", content: "" }];
-    return updated;
-  });
-
-  try {
-    await streamAIChatResponse(
-      [...messages, userMsg],
-      (chunk) => {
-        fullText += chunk;
-
-        setMessages(prev => {
-          const updated = [...prev];
-          updated[updated.length - 1] = {
-            role: "assistant",
-            content: fullText,
-          };
-          return updated;
-        });
-      }
-    );
-  } catch (error) {
-    setMessages(prev => [
-      ...prev,
-      { role: "assistant", content: "Connection lost. Please try again." },
-    ]);
-  } finally {
-    setIsLoading(false);
-  }
-};
-
+    try {
+      const response = await getAIChatResponse([...messages, userMsg]);
+      setMessages(prev => [...prev, { role: 'assistant', content: response }]);
+    } catch (error) {
+      setMessages(prev => [...prev, { role: 'assistant', content: 'Connection lost. Please try again.' }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
